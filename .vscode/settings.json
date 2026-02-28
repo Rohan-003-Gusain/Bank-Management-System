@@ -1,7 +1,0 @@
-{
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "c:\\Users\\rohan\\Downloads\\jcalendar-tz-1.3.3-4.jar"
-    ],
-    "java.debug.settings.onBuildFailureProceed": true
-}
