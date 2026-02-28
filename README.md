@@ -116,16 +116,16 @@ mechanisms during database operations.
 
 ### Login Page
 
-![Login](screenshots/login.png)
+![Login](src/screenshots/login.png)
 
 ### Signup Screen
 
-![Transaction](screenshots/signup.png)
+![Transaction](src/screenshots/signup.png)
 *The registration process consists of multiple signup pages following a similar interface and workflow.*
 
 ### ATM Dashboard / Transactions
 
-![Login](screenshots/transaction.png)
+![Login](src/screenshots/transaction.png)
 
 ---
 
