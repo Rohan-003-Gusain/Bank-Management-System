@@ -1,22 +1,38 @@
-package bank.management.system;
-import javax.swing.*;
-import java.awt.*;
+package bankmanagementsystem;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import bankmanagementsystem.base.SignupBaseFrame;
+import bankmanagementsystem.model.SignupData;
 
-public class SignupTwo extends JFrame implements ActionListener{
+public class SignupTwo extends SignupBaseFrame implements ActionListener {
 
-    JLabel additionalDetails, religion, category, income,  eduQualification, occupation, panNumber, aadharNumber, seniorCitizen, exisitngAccount;
-    JTextField tpanNumber, taadharNumber;
-    JComboBox<String> creligion, ccategory, cincome, ceduQualification, cquakification, coccupation;
-    JRadioButton syes, sno, eyes, eno;
-    ButtonGroup bseniorCitizen, bexistingAccount;
-    String formno;
-
-    SignupTwo(String formno) {
-
-        this.formno = formno;
+	private static final long serialVersionUID = 1L;
+	
+    private JLabel additionalDetails, religion, category, income,  eduQualification, occupation, panNumber, aadharNumber, seniorCitizen, exisitngAccount;
+    private JTextField tpanNumber, taadharNumber;
+    private JButton back, next;
+    private JComboBox<String> creligion, ccategory, cincome, ceduQualification, coccupation;
+    private JRadioButton syes, sno, eyes, eno;
+    private ButtonGroup bseniorCitizen, bexistingAccount;
+    private SignupData data;
+    
+    SignupTwo(SignupData data) {
+		this.data = data;
+		initUI();
+	}
+    
+private void initUI() {
+        
         setTitle("NEW ACCOUNT APPLICATION FOMR - PAGE 2");
 
         additionalDetails = new JLabel("Page 2: Additionl Details");
@@ -71,7 +87,7 @@ public class SignupTwo extends JFrame implements ActionListener{
 
 
         occupation = new JLabel("Occupation:");
-        occupation.setFont(new Font("Ralewat", Font.BOLD, 22));
+        occupation.setFont(new Font("Raleway", Font.BOLD, 22));
         occupation.setBounds(100, 370, 400, 30);
         add(occupation);
 
@@ -139,8 +155,16 @@ public class SignupTwo extends JFrame implements ActionListener{
         bexistingAccount = new ButtonGroup();
         bexistingAccount.add(eyes);
         bexistingAccount.add(eno);
+        
+        back = new JButton("Back");
+        back.setBackground(Color.BLACK);
+        back.setForeground(Color.WHITE);
+        back.setFont(new Font("Raleway", Font.BOLD, 14));
+        back.setBounds(300, 660, 80, 30);
+        back.addActionListener(this);
+        add(back);
 
-        JButton next = new JButton("Next");
+        next = new JButton("Next");
         next.setBackground(Color.BLACK);
         next.setForeground(Color.WHITE);
         next.setFont(new Font("Raleway", Font.BOLD, 14));
@@ -148,55 +172,102 @@ public class SignupTwo extends JFrame implements ActionListener{
         next.addActionListener(this);
         add(next);
 
-        getContentPane().setBackground(Color.WHITE);
+        loadData();
+        animation.fadeIn(this);
+    }
 
-        setSize(850, 800);
-        setLayout(null);
-        setLocation(350,10);
-        setVisible(true);
-        
+	private void loadData() {
+	
+	    if (data == null) return;
+	
+	    if (data.religion != null)
+	        creligion.setSelectedItem(data.religion);
+
+	    if (data.category != null)
+	        ccategory.setSelectedItem(data.category);
+
+	    if (data.income != null)
+	        cincome.setSelectedItem(data.income);
+
+	    if (data.education != null)
+	        ceduQualification.setSelectedItem(data.education);
+
+	    if (data.occupation != null)
+	        coccupation.setSelectedItem(data.occupation);
+	
+	    tpanNumber.setText(data.pan);
+	    taadharNumber.setText(data.aadhar);
+	
+	    if ("Yes".equals(data.seniorCitizen))
+	        syes.setSelected(true);
+	    else if ("No".equals(data.seniorCitizen))
+	        sno.setSelected(true);
+	
+	    if ("Yes".equals(data.existingAccount))
+	        eyes.setSelected(true);
+	    else if ("No".equals(data.existingAccount))
+	        eno.setSelected(true);
+	}
+    
+    private void saveFormData() {
+
+        data.religion = (String) creligion.getSelectedItem();
+        data.category = (String) ccategory.getSelectedItem();
+        data.income = (String) cincome.getSelectedItem();
+        data.education = (String) ceduQualification.getSelectedItem();
+        data.occupation = (String) coccupation.getSelectedItem();
+
+        data.pan = tpanNumber.getText().trim();
+        data.aadhar = taadharNumber.getText().trim();
+
+        data.seniorCitizen =
+                syes.isSelected() ? "Yes" :
+                sno.isSelected() ? "No" : null;
+
+        data.existingAccount =
+                eyes.isSelected() ? "Yes" :
+                eno.isSelected() ? "No" : null;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String religion = (String) creligion.getSelectedItem();
-        String category = (String) ccategory.getSelectedItem();
-        String income = (String) cincome.getSelectedItem();
-        String eduQualification = (String) ceduQualification.getSelectedItem();
+    	
+	    	if (e.getSource() == back) {
+	    		saveFormData();
+	    		animation.fadeOutAndOpen(this, () -> new SignupOne(data));
+	    		return;
+	    }
+	    	
+	    	if (e.getSource() == next) {
+	    		
+	    		String pan = tpanNumber.getText().trim();
+	    		String aadhar = taadharNumber.getText().trim();
+	        
+	        if (pan.isEmpty()) {
+	            JOptionPane.showMessageDialog(this, "PAN Number is required");
+	            return;
+	        }
 
-        String occupation = (String) coccupation.getSelectedItem();
-        String panNumber = (String) tpanNumber.getText();
-        String aadharNumber = (String) taadharNumber.getText();
-        
-        String seniorCitizen = null;
-        if (syes.isSelected()) {
-            seniorCitizen = "Yes";
-        } else if (sno.isSelected()) {
-            seniorCitizen = "No";
-        }
+	        if (!pan.matches("[A-Z]{5}[0-9]{4}[A-Z]")) {
+	            JOptionPane.showMessageDialog(this, "Enter valid PAN number (ABCDE1234F)");
+	            return;
+	        }
 
-        String exisitngAccount = null;
-        if (eyes.isSelected()) {
-            exisitngAccount = "Yes";
-        } else if (eno.isSelected()) {
-            exisitngAccount = "No";
-        }
+	        if (aadhar.isEmpty()) {
+	            JOptionPane.showMessageDialog(this, "Aadhar Number is required");
+	            return;
+	        }
 
-        try {
-                Conn con = new Conn();
-                String query = "insert into signuptwo  values('"+formno+"','"+religion+"','"+category+"','"+income+"','"+eduQualification+"','"+occupation+"','"+panNumber+"','"+aadharNumber+"','"+seniorCitizen+"','"+exisitngAccount+"')";
-                con.statement.executeUpdate(query);
-                System.out.println(query);
-
-                setVisible(false);
-                new SignupThree(formno).setVisible(true);
-            
-        } catch (Exception E) {
-            E.printStackTrace();
-        }
-
+	        if (!aadhar.matches("\\d{12}")) {
+	            JOptionPane.showMessageDialog(this, "Enter valid 12 digit Aadhar number");
+	            return;
+	        }
+	    
+	    		saveFormData();
+	        
+	        animation.fadeOutAndOpen(this, () -> new SignupThree(data));
+	    		
+	    	}	 
     }
-    public static void main(String[] args) {
-        new SignupTwo("");
-    }
-}
+   
+}   
