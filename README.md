@@ -37,7 +37,7 @@ The application implements a **three-step banking registration workflow**:
 - **Signup Page 2:** Additional Information  
 - **Signup Page 3:** Account Setup & Banking Facilities  
 
-The system automatically generates a **Card Number** and **Secure PIN**, while maintaining data consistency across pages using a centralized `SignupData` model.
+The system automatically generates a **Account Number** and **Secure PIN**, while maintaining data consistency across pages using a centralized `SignupData` model.
 
 ---
 
@@ -45,7 +45,7 @@ The system automatically generates a **Card Number** and **Secure PIN**, while m
 
 Users can log in using:
 
-- **Card Number**
+- **Account Number**
 - **PIN Number**
 
 Authentication is validated directly from the database, simulating ATM login behavior.
@@ -81,7 +81,7 @@ and transaction records across multiple modules.
   Store complete customer registration details collected during the multi-step signup process.
 
 - **atmlogin**  
-  Stores Card Number and PIN used for secure ATM authentication.
+  Stores Account Number and PIN used for secure ATM authentication.
 
 - **transactions**  
   Maintains deposit, withdrawal, and account activity history.
@@ -215,6 +215,6 @@ The application will start with the ATM Login Screen.
 ### ✅ Testing Flow
 
 1. Create Account using Signup pages  
-2. Generate Card Number & PIN  
+2. Generate Account Number & PIN  
 3. Login using generated credentials  
 4. Perform ATM transactions
